@@ -1,0 +1,26 @@
+#cloud-config
+hostname: xhyve-host
+users:
+  - name: core
+    passwd: $1$QzTD5TxH$i3Xwz.JD55lUPFo5snYTn.
+    groups:
+      - sudo
+      - docker
+  - name: root
+    passwd: $1$QzTD5TxH$i3Xwz.JD55lUPFo5snYTn.
+coreos:
+  units:
+    - name: docker-tcp.socket
+      command: start
+      enable: true
+      content: |
+        [Unit]
+        Description=Docker Socket for the API
+        
+        [Socket]
+        ListenStream=2375
+        BindIPv6Only=both
+        Service=docker.service
+        
+        [Install]
+        WantedBy=sockets.target
