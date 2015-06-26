@@ -20,3 +20,6 @@ RUN yum -y update && \
     yum clean all
 
 COPY ssl.conf /var/local/InterMapper_Settings/ssl.conf
+
+COPY start.sh /start.sh
+CMD /start.sh
