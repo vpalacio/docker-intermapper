@@ -12,7 +12,7 @@ MAINTAINER Victor Palacio <vpalacio@gmail.com>
 RUN yum -y groupinstall "Compatibility Libraries" 
 
 # Install java
-RUN yum -y install java
+RUN yum -y install java-1.7
 
 # Grab InterMapper Server rpm
 RUN curl -o /tmp/InterMapper-5.8.2-1.x86_64.5x.rpm http://www.helpsystems.com/download/5726/InterMapper-5.8.2-1.x86_64.5x.rpm/trial?full_name=&product_name=InterMapper+for+64-bit+RedHat
