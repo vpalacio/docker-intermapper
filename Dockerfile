@@ -1,25 +1,25 @@
 # https://index.docker.io/_/centos/
-FROM centos
+FROM centos:7
 
 # https://github.com/vpalacio
 MAINTAINER Victor Palacio <vpalacio@gmail.com>
 
-# Update the base image.
-# RUN yum -y update
+ENV PACKAGE InterMapper-5.8.2-1.x86_64.5x.rpm
 
-# InterMapper Requirements
-# Install Compatibility Libraries
-RUN yum -y groupinstall "Compatibility Libraries" 
+# Install InterMapper and its dependencies.
+RUN yum -y update && \
+    yum -y groupinstall "Compatibility Libraries" && \
+    yum -y install \
+      java-1.8.0 \
+      psmisc \
+      which \
+      && \
+    curl -o /tmp/${PACKAGE} -L "http://www.helpsystems.com/download/5726/${PACKAGE}/trial?full_name=dsfsd&company_name=sadfsd&bid=34&product_name=InterMapper+for+64-bit+RedHat" && \
+    yum -y --nogpgcheck localinstall /tmp/${PACKAGE} && \
+    rm -f /tmp/${PACKAGE} && \
+    yum clean all
 
-# Install java
-RUN yum -y install java-1.7
+COPY ssl.conf /var/local/InterMapper_Settings/ssl.conf
 
-# Grab InterMapper Server rpm
-RUN curl -o /tmp/InterMapper-5.8.2-1.x86_64.5x.rpm http://www.helpsystems.com/download/5726/InterMapper-5.8.2-1.x86_64.5x.rpm/trial?full_name=&product_name=InterMapper+for+64-bit+RedHat
-
-#install InterMapper and any other dependencies
-RUN yum -y --nogpgcheck localinstall /tmp/InterMapper-5.8.2-1.x86_64.5x.rpm
-
-# Remove yum metadata.
-RUN yum clean all
-
+COPY start.sh /start.sh
+CMD /start.sh
